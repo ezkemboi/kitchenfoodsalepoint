@@ -1,6 +1,6 @@
 // Login screen
 import React, { Component } from "react";
-import { Form, Label, Input, Item } from "native-base";
+import { Form, Label, Input, Item, Container } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
@@ -27,24 +27,26 @@ export default class Login extends Component {
 
   render() {
     return (
-      <LinearGradient
-        colors={["#709BA5", "#1A707F"]}
-        style={{ flex: 1, paddingTop: 20 }}
-      >
-        <TopButton />
-        <LogoComponent />
-        <Form>
-          <Item fixedLabel last>
-            <Label>Username</Label>
-            <Input />
-          </Item>
-          <Item fixedLabel last>
-            <Label>Password</Label>
-            <Input />
-          </Item>
-        </Form>
-        <BottomButton />
-      </LinearGradient>
+      <Container style={{ flex: 1 }}>
+        <LinearGradient
+          colors={["#709BA5", "#1A707F"]}
+          style={{ flex: 1, paddingTop: 20 }}
+        >
+          <TopButton />
+          <LogoComponent />
+          <Form>
+            <Item fixedLabel last>
+              <Label>Username</Label>
+              <Input />
+            </Item>
+            <Item fixedLabel last>
+              <Label>Password</Label>
+              <Input />
+            </Item>
+          </Form>
+          <BottomButton />
+        </LinearGradient>
+      </Container>
     );
   }
 }

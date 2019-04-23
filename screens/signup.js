@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Item, Input, Label } from "native-base";
+import { Form, Item, Input, Label, Container } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
@@ -30,36 +30,38 @@ export default class SignUp extends Component {
 
   render() {
     return (
-      <LinearGradient
-        colors={["#709BA5", "#1A707F"]}
-        style={{ flex: 1, paddingTop: 20 }}
-      >
-        <TopButton />
-        <LogoComponent />
-        <Form>
-          <Item fixedLabel last>
-            <Label>Email</Label>
-            <Input />
-          </Item>
-          <Item fixedLabel>
-            <Label>First Name</Label>
-            <Input />
-          </Item>
-          <Item fixedLabel last>
-            <Label>Surname</Label>
-            <Input />
-          </Item>
-          <Item fixedLabel last>
-            <Label>Username</Label>
-            <Input />
-          </Item>
-          <Item fixedLabel last>
-            <Label>Password</Label>
-            <Input />
-          </Item>
-        </Form>
-        <BottomButton />
-      </LinearGradient>
+      <Container style={{ flex: 1 }}>
+        <LinearGradient
+          colors={["#709BA5", "#1A707F"]}
+          style={{ flex: 1, paddingTop: 20 }}
+        >
+          <TopButton />
+          <LogoComponent />
+          <Form>
+            <Item fixedLabel last>
+              <Label>Email</Label>
+              <Input />
+            </Item>
+            <Item fixedLabel>
+              <Label>First Name</Label>
+              <Input />
+            </Item>
+            <Item fixedLabel last>
+              <Label>Surname</Label>
+              <Input />
+            </Item>
+            <Item fixedLabel last>
+              <Label>Username</Label>
+              <Input />
+            </Item>
+            <Item fixedLabel last>
+              <Label>Password</Label>
+              <Input />
+            </Item>
+          </Form>
+          <BottomButton />
+        </LinearGradient>
+      </Container>
     );
   }
 }
