@@ -9,7 +9,7 @@
 import React, { Component } from "react";
 import { ActivityIndicator, View } from "react-native";
 import axios from "axios";
-import { Text, Icon, Container } from "native-base";
+import { Text, Icon, Container, Content } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
@@ -75,22 +75,24 @@ export default class Menu extends Component {
       });
     }
     return (
-      <Container style={{ flex: 1 }}>
-        <LinearGradient
-          colors={["#709BA5", "#1A707F"]}
-          style={{ flex: 1, paddingTop: 20 }}
-        >
-          <TopButton />
-          <LogoComponent />
-          {!products || products.length < 1 ? (
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <ActivityIndicator size={80} color="white" />
-            </View>
-          ) : (
-            allProducts.slice(0, 8)
-          )}
-          <BottomButton />
-        </LinearGradient>
+      <Container>
+        <Content style={{ flex: 1 }}>
+          <LinearGradient
+            colors={["#709BA5", "#1A707F"]}
+            style={{ flex: 1, paddingTop: 20, paddingBottom: 100 }}
+          >
+            <TopButton />
+            <LogoComponent />
+            {!products || products.length < 1 ? (
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <ActivityIndicator size={80} color="white" />
+              </View>
+            ) : (
+              allProducts.slice(0, 8)
+            )}
+            <BottomButton />
+          </LinearGradient>
+        </Content>
       </Container>
     );
   }
