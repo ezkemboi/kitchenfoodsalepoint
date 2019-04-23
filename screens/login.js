@@ -1,6 +1,6 @@
 // Login screen
 import React, { Component } from "react";
-import { Text } from "native-base";
+import { Form, Label, Input, Item } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
@@ -10,13 +10,21 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
       username: "",
-      password: "",
-      firstName: "",
-      surname: ""
+      password: ""
     };
   }
+
+  // Handle change of values
+  handleValueChange = () => {
+    console.log("I have changed");
+  };
+
+  // Handle submit of login
+  handleLoginSubmision = () => {
+    console.log("I have submitted form");
+  };
+
   render() {
     return (
       <LinearGradient
@@ -25,7 +33,16 @@ export default class Login extends Component {
       >
         <TopButton />
         <LogoComponent />
-        <Text>Login page</Text>
+        <Form>
+          <Item fixedLabel last>
+            <Label>Username</Label>
+            <Input />
+          </Item>
+          <Item fixedLabel last>
+            <Label>Password</Label>
+            <Input />
+          </Item>
+        </Form>
         <BottomButton />
       </LinearGradient>
     );

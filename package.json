@@ -7,10 +7,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "native-base": "^2.12.1",
     "react": "16.8.3",
     "react-native": "0.59.4",
-    "react-native-linear-gradient": "^2.5.4"
+    "react-native-linear-gradient": "^2.5.4",
+    "react-navigation": "^3.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

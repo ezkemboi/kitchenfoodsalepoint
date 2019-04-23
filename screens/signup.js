@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Text } from "native-base";
+import { Form, Item, Input, Label } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
 import BottomButton from "../components/bottombutton";
 
+// Sign up screen and components
 export default class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,17 @@ export default class SignUp extends Component {
       surname: ""
     };
   }
+
+  // Change of input values
+  handleOnChange = () => {
+    console.log("I have changes");
+  };
+
+  // Handle submit of registration
+  handleSubmitRegistration = () => {
+    console.log("I am now submitting my registration");
+  };
+
   render() {
     return (
       <LinearGradient
@@ -24,7 +36,28 @@ export default class SignUp extends Component {
       >
         <TopButton />
         <LogoComponent />
-        <Text>Sign Up page</Text>
+        <Form>
+          <Item fixedLabel last>
+            <Label>Email</Label>
+            <Input />
+          </Item>
+          <Item fixedLabel>
+            <Label>First Name</Label>
+            <Input />
+          </Item>
+          <Item fixedLabel last>
+            <Label>Surname</Label>
+            <Input />
+          </Item>
+          <Item fixedLabel last>
+            <Label>Username</Label>
+            <Input />
+          </Item>
+          <Item fixedLabel last>
+            <Label>Password</Label>
+            <Input />
+          </Item>
+        </Form>
         <BottomButton />
       </LinearGradient>
     );
