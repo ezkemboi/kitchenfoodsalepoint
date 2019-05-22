@@ -9,10 +9,13 @@ import {
   Content,
   Button,
   Text,
-  Toast
+  Toast,
+  View
 } from "native-base";
 import axios from "axios";
 import LinearGradient from "react-native-linear-gradient";
+// import AsyncStorage from '@react-native-community/async-storage';
+
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
 
@@ -30,6 +33,8 @@ export default class Login extends Component {
     axios
       .post("https://murmuring-peak-67663.herokuapp.com/login", this.state)
       .then(response => {
+        // Save login items to local storage
+
         console.log("------response-----", response);
         Toast.show({
           text: "Successfully logged in",
@@ -93,6 +98,30 @@ export default class Login extends Component {
                 onPress={this.handleLoginSubmision}
               >
                 <Text>Login</Text>
+              </Button>
+              <Text
+                style={{
+                  paddingTop: 50,
+                  textAlign: "center"
+                }}
+              >
+                Don't have any account?
+              </Text>
+              <Button
+                transparent
+                light
+                style={{
+                  alignSelf: "center",
+                  borderRadius: 15,
+                  borderWidth: 2,
+                  borderColor: "white",
+                  paddingRight: 40,
+                  paddingLeft: 40,
+                  marginTop: 15
+                }}
+                onPress={() => this.props.navigation.push('SignUp')}
+              >
+                <Text>Create Account</Text>
               </Button>
             </Form>
           </LinearGradient>

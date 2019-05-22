@@ -7,12 +7,13 @@
  */
 
 import React, { Component } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, Image } from "react-native";
 import axios from "axios";
-import { Text, Icon, Container, Content, Button } from "native-base";
+import { Text, Icon, Container, Content, Button, Card, CardItem, Thumbnail, Body, Grid, Col, Row } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
+import food from '../food.png';
 
 export default class Menu extends Component {
   constructor(props) {
@@ -24,7 +25,6 @@ export default class Menu extends Component {
   }
 
   componentDidMount() {
-    // console.log("I am just roaming here");
     axios
       .get("https://murmuring-peak-67663.herokuapp.com/products")
       .then(response => {
@@ -38,24 +38,26 @@ export default class Menu extends Component {
       });
   }
 
-  // Update the details of the product when user updates the data
-  componentDidUpdate() {
-    // console.log("I am just roaming here");
-    axios
-      .get("https://murmuring-peak-67663.herokuapp.com/products")
-      .then(response => {
-        const { data } = response.data;
-        this.setState({
-          products: data
-        });
-      })
-      .catch(err => {
-        console.log("------This is err ---------", err);
-      });
+  handleAddToCart = () => {
+    console.log('This is my add cart')
+    const cartProduct = {
+      "userId": 1,
+      "product": {
+        "productId": 1,
+        "quantity": 2
+      }
+    }
+    return axios.post("https://murmuring-peak-67663.herokuapp.com/cart", cartProduct).then(
+      response => {
+        console.log('--------This is response---------', response)
+      }
+    ).catch(err => {
+      console.log('This is the error from cart', err)
+    })
   }
 
   handleDelete = id => {
-    axios
+    return axios
       .delete(`https://murmuring-peak-67663.herokuapp.com/products/${id}`)
       .then(response => {
         console.log("-------this is the response ------", response);
@@ -82,28 +84,32 @@ export default class Menu extends Component {
     if (products) {
       allProducts = products.map((product, index) => {
         return (
-          <View style={{ flexDirection: "row", width: "100%" }} key={index}>
-            <Text style={{ color: "white", width: "40%", padding: 10 }}>{`${
-              product.name
-            }`}</Text>
-            <Text style={{ color: "white", width: "30%", padding: 10 }}>
-              -----------------
-            </Text>
-            <Text style={{ color: "white", width: "20%", padding: 10 }}>
-              {`£${product.price}`}
-            </Text>
-            <Icon
-              type="FontAwesome"
-              name="trash"
-              key={product.id}
-              style={{
-                padding: 10,
-                fontSize: 20,
-                width: "10%"
-              }}
-              onPress={() => this.handleDelete(product.id)}
-            />
-          </View>
+          <Card key={index + 1}>
+            <CardItem>
+              <Thumbnail source={food} />
+              <Body>
+                <Text>{product.name}</Text>
+                <Text note>Stuffed with Callaloo</Text>
+              </Body>
+            </CardItem>
+            <CardItem cardBody>
+              <Image source={food} style={{ height: 200, width: null, flex: 1 }} />
+            </CardItem>
+            <CardItem>
+              <Text style={{ textAlignVertical: "center" }}>Price: € {product.price}.00</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Button
+                  full success
+                  key={product.id}
+                  onPress={() => this.handleAddToCart()}
+                >
+                  <Text>Add To Cart</Text>
+                </Button>
+              </Body>
+            </CardItem>
+          </Card>
         );
       });
     }
@@ -117,32 +123,20 @@ export default class Menu extends Component {
         }}
       >
         <Content style={{ minHeight: "100%" }}>
-          <TopButton />
-          <LogoComponent />
-          {!products || products.length < 1 ? (
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <ActivityIndicator size={80} color="white" />
-            </View>
-          ) : (
-            allProducts.slice(0, 12)
-          )}
-          <Button
-            transparent
-            light
-            style={{
-              alignSelf: "center",
-              borderRadius: 15,
-              borderWidth: 2,
-              borderColor: "white",
-              paddingRight: 40,
-              paddingLeft: 40,
-              position: "relative",
-              marginBottom: 20
-            }}
-            onPress={() => this.props.navigation.navigate("AddBucket")}
-          >
-            <Text>Add to Basket</Text>
-          </Button>
+
+          <Grid>
+            <Row>
+              <Col>
+                {!products || products.length < 1 ? (
+                  <View style={{ flex: 1, justifyContent: "center" }}>
+                    <ActivityIndicator size={80} color="white" />
+                  </View>
+                ) : (
+                    allProducts
+                  )}
+              </Col>
+            </Row>
+          </Grid>
         </Content>
       </LinearGradient>
     );

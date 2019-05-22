@@ -31,8 +31,11 @@ const AppNavigator = createStackNavigator(
       })
     }
   },
+  // {
+  //   initialRouteName: "Login"
+  // }
   {
-    initialRouteName: "SignUp"
+    initialRouteName: "Menu"
   }
 );
 
