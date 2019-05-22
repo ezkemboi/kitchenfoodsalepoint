@@ -1,3 +1,6 @@
-### Gennas Kitchen Mobile APP
+# Kitchen Food Sale Point 
 
-Gennas kitchen mobile app
+An app used to sale food to people. User can add items to cart and make purchases. 
+
+# Usage
+- Will be updated.

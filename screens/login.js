@@ -14,28 +14,56 @@ import {
 } from "native-base";
 import axios from "axios";
 import LinearGradient from "react-native-linear-gradient";
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
+import setItemToLocalStorage from '../helpers/setlocalstorage';
+
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: ""
+      user: {
+        username: "",
+        password: "",
+      },
+      storedData: {}
     };
+  }
+
+  componentDidMount() {
+    // Get user details 
+    this.getItemToLocalStorage('user').then(response => {
+      // Try send user to menu if they have ever logged in
+      if (response.id) {
+        this.props.navigation.navigate("Menu");
+      }
+    })
+  }
+
+  // Method to get an item stored for user credentials
+  getItemToLocalStorage = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key)
+      return JSON.parse(value)
+    } catch (err) {
+      console.log('---------errror setting token----', err)
+      return false
+    }
   }
 
   // Handle submit of login
   handleLoginSubmision = () => {
+    const { user } = this.state;
+    console.log('This is state of the login functionality', user)
     axios
-      .post("https://murmuring-peak-67663.herokuapp.com/login", this.state)
+      .post("https://murmuring-peak-67663.herokuapp.com/login", user)
       .then(response => {
         // Save login items to local storage
+        const { user } = response.data
 
-        console.log("------response-----", response);
         Toast.show({
           text: "Successfully logged in",
           position: "top",
@@ -44,6 +72,8 @@ export default class Login extends Component {
           duration: 2000
         });
         this.props.navigation.navigate("Menu");
+        // Save user detals to local storage
+        return setItemToLocalStorage('user', user)
       })
       .catch(err => {
         console.log("------err while registering----->>>>", err);

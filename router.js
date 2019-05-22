@@ -31,12 +31,12 @@ const AppNavigator = createStackNavigator(
       })
     }
   },
-  // {
-  //   initialRouteName: "Login"
-  // }
   {
-    initialRouteName: "Menu"
+    initialRouteName: "Login"
   }
+  // {
+  //   initialRouteName: "Menu"
+  // }
 );
 
 export default createAppContainer(AppNavigator);

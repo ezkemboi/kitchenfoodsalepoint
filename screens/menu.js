@@ -9,7 +9,8 @@
 import React, { Component } from "react";
 import { ActivityIndicator, View, Image } from "react-native";
 import axios from "axios";
-import { Text, Icon, Container, Content, Button, Card, CardItem, Thumbnail, Body, Grid, Col, Row } from "native-base";
+import { Text, Icon, Container, Content, Toast, Button, Card, CardItem, Thumbnail, Body, Grid, Col, Row } from "native-base";
+import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
 import TopButton from "../components/topbutton";
@@ -20,11 +21,21 @@ export default class Menu extends Component {
     super(props);
     this.state = {
       products: [],
-      id: ""
+      id: "",
+      cartItems: [],
+      user: {}
     };
+    // Get user details
+    this.getItemToLocalStorage('user').then(response => {
+      this.setState({
+        user: response
+      })
+    }
+    )
   }
 
   componentDidMount() {
+    console.log('---This is user---', this.state.user)
     axios
       .get("https://murmuring-peak-67663.herokuapp.com/products")
       .then(response => {
@@ -38,18 +49,38 @@ export default class Menu extends Component {
       });
   }
 
-  handleAddToCart = () => {
-    console.log('This is my add cart')
+  // Method to get an item stored for user credentials
+  getItemToLocalStorage = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key)
+      return JSON.parse(value)
+    } catch (err) {
+      console.log('---------errror setting token----', err)
+      return false
+    }
+  }
+
+  handleAddToCart = productId => {
+
+    const user = this.state.user
     const cartProduct = {
-      "userId": 1,
+      "userId": user.id,
       "product": {
-        "productId": 1,
-        "quantity": 2
+        "productId": productId,
+        "quantity": 1
       }
     }
     return axios.post("https://murmuring-peak-67663.herokuapp.com/cart", cartProduct).then(
       response => {
-        console.log('--------This is response---------', response)
+        const { data } = response.data;
+        Toast.show({
+          text: "Successfully added the product to cart",
+          position: "top",
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        });
+        console.log('--------data filtered--------', data)
       }
     ).catch(err => {
       console.log('This is the error from cart', err)
@@ -79,7 +110,17 @@ export default class Menu extends Component {
   };
 
   render() {
-    const { products } = this.state;
+    const { products, user } = this.state;
+    if (user) {
+      // // Collect items from user cart
+      // axios.get(`https://murmuring-peak-67663.herokuapp.com/cart/${4}`).then(response => {
+      //   const { data } = response.data
+      //   this.setState({
+      //     cartItems: data
+      //   })
+      // })
+
+    }
     let allProducts;
     if (products) {
       allProducts = products.map((product, index) => {
@@ -103,7 +144,7 @@ export default class Menu extends Component {
                 <Button
                   full success
                   key={product.id}
-                  onPress={() => this.handleAddToCart()}
+                  onPress={() => this.handleAddToCart(product.id)}
                 >
                   <Text>Add To Cart</Text>
                 </Button>
