@@ -3,6 +3,7 @@ import Menu from "./screens/menu";
 import SignUp from "./screens/signup";
 import Login from "./screens/login";
 import AddBucket from "./screens/addbucket";
+import Cart from './screens/cart';
 
 const AppNavigator = createStackNavigator(
   {
@@ -26,6 +27,12 @@ const AppNavigator = createStackNavigator(
     },
     AddBucket: {
       screen: AddBucket,
+      navigationOptions: () => ({
+        header: null
+      })
+    },
+    Cart: {
+      screen: Cart,
       navigationOptions: () => ({
         header: null
       })

@@ -9,7 +9,13 @@
 import React, { Component } from "react";
 import { ActivityIndicator, View, Image } from "react-native";
 import axios from "axios";
-import { Text, Icon, Container, Content, Toast, Button, Card, CardItem, Thumbnail, Body, Grid, Col, Row } from "native-base";
+import {
+  Text, Icon, Container,
+  Content, Toast, Button,
+  Card, CardItem, Thumbnail,
+  Body, Grid, Col, Row,
+  Header, Badge
+} from "native-base";
 import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from "react-native-linear-gradient";
 import LogoComponent from "../components/logo";
@@ -35,7 +41,12 @@ export default class Menu extends Component {
   }
 
   componentDidMount() {
-    console.log('---This is user---', this.state.user)
+    // Set user data so as to be used when adding items to cart
+    this.getItemToLocalStorage('user').then(response => {
+      this.setState({
+        user: response
+      })
+    })
     axios
       .get("https://murmuring-peak-67663.herokuapp.com/products")
       .then(response => {
@@ -61,8 +72,12 @@ export default class Menu extends Component {
   }
 
   handleAddToCart = productId => {
-
-    const user = this.state.user
+    /**
+     * Determine the quantity required and userId
+     * For now quantity taken is one
+    */
+    const user = this.state.user;
+    console.log('------->>>>>>>', user.id)
     const cartProduct = {
       "userId": user.id,
       "product": {
@@ -86,28 +101,6 @@ export default class Menu extends Component {
       console.log('This is the error from cart', err)
     })
   }
-
-  handleDelete = id => {
-    return axios
-      .delete(`https://murmuring-peak-67663.herokuapp.com/products/${id}`)
-      .then(response => {
-        console.log("-------this is the response ------", response);
-        axios
-          .get("https://murmuring-peak-67663.herokuapp.com/products")
-          .then(response => {
-            const { data } = response.data;
-            this.setState({
-              products: data
-            });
-          })
-          .catch(err => {
-            console.log("------This is err ---------", err);
-          });
-      })
-      .catch(err => {
-        console.log("--------err arised-----", err);
-      });
-  };
 
   render() {
     const { products, user } = this.state;
@@ -163,8 +156,24 @@ export default class Menu extends Component {
           paddingTop: 20
         }}
       >
-        <Content style={{ minHeight: "100%" }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignSelf: "flex-end"
+          }}
+        >
+          <Icon
+            type="FontAwesome"
+            name="cart-plus"
+            onPress={() => this.props.navigation.navigate('Cart')}
+          />
+          <Badge>
+            <Text>3</Text>
+          </Badge>
+        </View>
 
+        <Content style={{ minHeight: "100%" }}>
           <Grid>
             <Row>
               <Col>

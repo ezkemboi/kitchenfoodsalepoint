@@ -34,7 +34,7 @@ export default class Login extends Component {
   }
 
   componentDidMount() {
-    // Get user details 
+    // Get user details form the local storage
     this.getItemToLocalStorage('user').then(response => {
       // Try send user to menu if they have ever logged in
       if (response.id) {
@@ -56,8 +56,16 @@ export default class Login extends Component {
 
   // Handle submit of login
   handleLoginSubmision = () => {
-    const { user } = this.state;
-    console.log('This is state of the login functionality', user)
+    /**
+     * Make some tricks but in future will set state based on user
+     * const { user } = this.state;
+    */
+    const { username, password } = this.state;
+    // Make new object
+    const user = {
+      username,
+      password
+    }
     axios
       .post("https://murmuring-peak-67663.herokuapp.com/login", user)
       .then(response => {
